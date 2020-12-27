@@ -26,7 +26,6 @@ def plugin_main(image, layer, version_index):
     graph_path = os.path.join(plugin_root_path, "", "models/pix2pix/zaidalyafeai_zaidalyafeai_github_io/" + version + ".param")
     weight_path = os.path.join(plugin_root_path, "", "models/pix2pix/zaidalyafeai_zaidalyafeai_github_io/" + version + ".bin")
     in_tensor_name, out_tensor_name = "data", "activation_9ltanh_0"
-
     get_model(model_url, [graph_path, weight_path])
 
     executable = os.path.join(bin_path, '', 'ncnn_inference_runner.exe')
