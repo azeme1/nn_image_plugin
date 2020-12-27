@@ -23,12 +23,8 @@ def plugin_main(image, layer):
     file_path_dst = os.path.join(plugin_working_path, "", "_dst.png")
     pdb.file_jpeg_save(image, layer, file_path_src, file_path_src, 0.9, 0, 0, 0, "", 0, 0, 0, 0)
 
-    args = (executable,
-            graph_path,
-            weight_path,
-            "data", "softmax_convlsigmoid_0",
-            file_path_src,
-            file_path_dst, "0", "4", "256", "256")
+    args = (executable, graph_path, weight_path, "data", "softmax_convlsigmoid_0",
+            file_path_src, file_path_dst, "256", "256", "0", "4", "1", "3")
 
     popen = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=debug)
     popen.wait()
