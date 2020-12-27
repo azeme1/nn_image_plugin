@@ -38,10 +38,11 @@ def plugin_main(image, layer, version_index):
     args = (executable, graph_path, weight_path, in_tensor_name, out_tensor_name,
             file_path_src, file_path_dst, "256", "256", "0", "2", "0", "2")
 
-    popen = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=debug)
+    FNULL = open(os.devnull, 'w')
+    popen = subprocess.Popen(args, stdout=FNULL, stderr=subprocess.PIPE, shell=debug)
     popen.wait()
-    output = popen.communicate()
     if debug:
+        output = popen.communicate()
         print(output)
 
     mask = pdb.gimp_file_load_layer(image, file_path_dst)

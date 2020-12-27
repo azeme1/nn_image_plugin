@@ -26,8 +26,6 @@ def plugin_main(image, layer):
 
     executable = os.path.join(bin_path, '', 'ncnn_inference_runner.exe')
     os.environ['PATH'] = os.environ['PATH'] + ";" + lib_path
-    from time import sleep
-
 
     file_path_src = os.path.join(plugin_working_path, "", "_src.png")
     file_path_dst = os.path.join(plugin_working_path, "", "_dst.png")
@@ -36,9 +34,12 @@ def plugin_main(image, layer):
     args = (executable, graph_path, weight_path, in_tensor_name, out_tensor_name,
             file_path_src, file_path_dst, "256", "256", "0", "4", "1", "3")
 
-    popen = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=debug)
+    FNULL = open(os.devnull, 'w')
+    popen = subprocess.Popen(args, stdout=FNULL, stderr=subprocess.PIPE, shell=debug)
     popen.wait()
-    output = popen.communicate()
+    if debug:
+        output = popen.communicate()
+        print(output)
 
     mask = pdb.gimp_file_load_layer(image, file_path_dst)
     pdb.gimp_image_add_layer(image, mask, 0)
