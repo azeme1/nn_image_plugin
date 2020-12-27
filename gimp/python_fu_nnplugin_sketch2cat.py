@@ -1,11 +1,13 @@
 from __future__ import print_function
-from gimpfu import *
 import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from gimpfu import *
 import subprocess
-from time import sleep
 import tempfile
 import shutil
-
+from plugin_helper.download import get_model
 
 version_dict = {0: "Sketch2Cat_v0_small",
                 1: "Sketch2Cat_v1",
@@ -19,10 +21,13 @@ def plugin_main(image, layer, version_index):
     bin_path = os.path.join(plugin_root_path, "", "bin")
     version = version_dict[version_index]
     version = version + "/" + version
+
+    model_url = "https://github.com/azeme1/nn_image_plugin/raw/dev/models/pix2pix/zaidalyafeai_zaidalyafeai_github_io/Sketch2Cat_v0_small/Sketch2Cat_v0_small.zip"
     graph_path = os.path.join(plugin_root_path, "", "models/pix2pix/zaidalyafeai_zaidalyafeai_github_io/" + version + ".param")
-    weight_path = os.path.join(plugin_root_path, "","models/pix2pix/zaidalyafeai_zaidalyafeai_github_io/" + version + ".bin")
+    weight_path = os.path.join(plugin_root_path, "", "models/pix2pix/zaidalyafeai_zaidalyafeai_github_io/" + version + ".bin")
     in_tensor_name, out_tensor_name = "data", "activation_9ltanh_0"
 
+    get_model(model_url, [graph_path, weight_path])
 
     executable = os.path.join(bin_path, '', 'ncnn_inference_runner.exe')
     os.environ['PATH'] = os.environ['PATH'] + ";" + lib_path
@@ -37,7 +42,8 @@ def plugin_main(image, layer, version_index):
     popen = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=debug)
     popen.wait()
     output = popen.communicate()
-    print(output)
+    if debug:
+        print(output)
 
     mask = pdb.gimp_file_load_layer(image, file_path_dst)
     pdb.gimp_image_add_layer(image, mask, 0)
