@@ -3,6 +3,8 @@ import sys
 import os
 import zipfile
 
+URL_ROOT = "https://github.com/azeme1/nn_image_plugin/raw/dev/models/"
+
 def get_model(model_url, container):
     is_correct = all([os.path.isfile(item) for item in container])
     if not is_correct:

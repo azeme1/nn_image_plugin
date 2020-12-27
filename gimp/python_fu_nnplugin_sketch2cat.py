@@ -7,7 +7,7 @@ from gimpfu import *
 import subprocess
 import tempfile
 import shutil
-from plugin_helper.download import get_model
+from plugin_helper.download import URL_ROOT, get_model
 
 version_dict = {0: "Sketch2Cat_v0_small",
                 1: "Sketch2Cat_v1",
@@ -22,7 +22,7 @@ def plugin_main(image, layer, version_index):
     version = version_dict[version_index]
     version = version + "/" + version
 
-    model_url = "https://github.com/azeme1/nn_image_plugin/raw/dev/models/pix2pix/zaidalyafeai_zaidalyafeai_github_io/Sketch2Cat_v0_small/Sketch2Cat_v0_small.zip"
+    model_url = URL_ROOT + "pix2pix/zaidalyafeai_zaidalyafeai_github_io/" + version + ".zip"
     graph_path = os.path.join(plugin_root_path, "", "models/pix2pix/zaidalyafeai_zaidalyafeai_github_io/" + version + ".param")
     weight_path = os.path.join(plugin_root_path, "", "models/pix2pix/zaidalyafeai_zaidalyafeai_github_io/" + version + ".bin")
     in_tensor_name, out_tensor_name = "data", "activation_9ltanh_0"
